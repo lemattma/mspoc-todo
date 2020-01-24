@@ -1,0 +1,28 @@
+version: "3.5"
+services:
+  # redis:
+  #   image: redis:alpine
+  #   ports:
+  #     - 6379:6379
+  # memcached:
+  #   image: memcached:alpine
+  #   ports:
+  #     - 11211:11211
+  # elasticsearch:
+  #   image: docker.elastic.co/elasticsearch/elasticsearch:6.8.2
+  #   volumes:
+  #     - ./docker/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+  #   environment:
+  #     - ES_JAVA_OPTS=-Xms500m -Xmx500m
+  #     - discovery.type=single-node
+  #   ports:
+  #     - 9200:9200
+  postgres:
+    image: mdillon/postgis:9.6-alpine
+    volumes:
+      - ./.postgres-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=postgres
+    ports:
+      - 5432:5432
