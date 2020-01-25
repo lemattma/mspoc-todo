@@ -1,0 +1,76 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: mspoc-todo
+  name: mspoc-todo-srv
+  labels:
+    app: mspoc-todo-app
+spec:
+  ports:
+    - port: 3000
+  selector:
+    app: mspoc-todo-app
+    tier: app
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: mspoc-todo
+  name: mspoc-todo
+spec:
+  replicas: 1
+  minReadySeconds: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: mspoc-todo-app
+      tier: app
+  template:
+    metadata:
+      name: rails
+      labels:
+        app: mspoc-todo-app
+        tier: app
+    spec:
+      containers:
+      - name: rails
+        image: martinmirandac/mspoc-todo:latest
+        args: ["rails s -p 3000 -b 0.0.0.0"]
+        env:
+        - name: RAILS_LOG_TO_STDOUT
+          value: "true"
+        - name: RAILS_SERVE_STATIC_FILES
+          value: "true"
+        - name: DATABASE_NAME
+          value: "mspoc-todo_production"
+        - name: DATABASE_PORT
+          value: "5432"
+        - name: DATABASE_URL
+          value: "postgres"
+        - name: DATABASE_USER
+          valueFrom:
+            secretKeyRef:
+              name: "db-user"
+              key: "username"
+        # - name: DATABASE_PASSWORD
+        #   valueFrom:
+        #     secretKeyRef:
+        #       name: "db-user-pass"
+        #       key: "password"
+        # - name: REDIS_URL
+        #   value: "redis"
+        # - name: REDIS_PORT
+        #   value: "6379"
+        - name: RAILS_ENV
+          value: "production"
+        - name: SECRET_KEY_BASE
+          valueFrom:
+            secretKeyRef:
+              name: "secret-key-base"
+              key: "secret-key-base"
+        ports:
+          - containerPort: 3000

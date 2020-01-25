@@ -1,5 +1,10 @@
 version: "3.5"
 services:
+  setup:
+    build: .
+    depends_on:
+      - postgres
+    command: "bin/rails db:migrate"
   # redis:
   #   image: redis:alpine
   #   ports:
@@ -27,9 +32,10 @@ services:
     ports:
       - 5432:5432
   api:
+    depends_on:
+      - postgres
+      - setup
     build: .
-    image: mspoc-todo
-    # command: bin/rails server --port 3000 --binding 0.0.0.0
     ports:
       - 3000:3000
     links:

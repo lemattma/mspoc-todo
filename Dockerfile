@@ -11,4 +11,8 @@ COPY . /app
 WORKDIR /app
 EXPOSE 3000
 
+COPY docker-entrypoint.sh /usr/bin/
+RUN chmod +x /usr/bin/docker-entrypoint.sh
+ENTRYPOINT ["docker-entrypoint.sh"]
+
 CMD ["bundle", "exec", "puma", "-C", "config/puma.rb"]

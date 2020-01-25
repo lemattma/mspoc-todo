@@ -1,0 +1,14 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  namespace: mspoc-todo
+  name: mspoc-todo-ing
+spec:
+  rules:
+    - host: mspoc-todo.local
+      http:
+        paths:
+          - backend:
+              serviceName: mspoc-todo-srv
+              servicePort: 3000
+            path: /
