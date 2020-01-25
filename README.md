@@ -8,15 +8,21 @@ rake docker:push_image
 ```
 
 ## Cluster Setup
+
+* https://kubernetes.io/docs/concepts/
+* https://www.monkeyvault.net/rails-on-kubernetes-part-2/
+* https://kubernetes.github.io/ingress-nginx/troubleshooting/
+* https://cloud.google.com/blog/products/containers-kubernetes/your-guide-kubernetes-best-practices
+* https://learnk8s.io/production-best-practices
+
 ```bash
 minikube start
 
-# any better way to do this?
+# secrets
 kubectl -n mspoc-todo create secret generic db-user --from-literal=username=postgres
 kubectl -n mspoc-todo create secret generic secret-key-base --from-literal=secret-key-base=85d6555b10f75f61e8191b81d12c38ce37cefbaa24d62d9482ec1b1572f2901983328caca581d4fc731b9591b17d72e37e0e3662b24c0c2d07eadaa19182122e
 
 # initialise the namespace
-# when's good to use a namespace
 kubectl create -f infrastructure/namespace/mspoc-todo/namespace.yml
 
 # volume and postgres TODO: Terraform
@@ -46,5 +52,13 @@ kubectl -n kube-system logs nginx-ingress-controller-6fc5bcc8c9-j2xz2
 # kubectl describe ing
 # kubectl get ing
 # minikube ip
-
 ```
+
+Questions:
+
+* what's spec?
+* what's template?
+* how to restart the ingress?
+* best practices on selectors? app, tier?
+* best practices on namespaces?
+* best practices on secrets and config?
