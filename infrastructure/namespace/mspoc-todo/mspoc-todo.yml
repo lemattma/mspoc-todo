@@ -10,7 +10,7 @@ spec:
     - port: 3000
   selector:
     app: mspoc-todo-app
-    tier: app
+    # tier: app
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -18,23 +18,23 @@ metadata:
   namespace: mspoc-todo
   name: mspoc-todo
 spec:
-  replicas: 1
+  replicas: 3
   minReadySeconds: 5
   strategy:
     type: RollingUpdate
     rollingUpdate:
-      maxSurge: 1
-      maxUnavailable: 1
+      maxSurge: 10
+      maxUnavailable: 2
   selector:
     matchLabels:
       app: mspoc-todo-app
-      tier: app
+      # tier: app
   template:
     metadata:
       name: rails
       labels:
         app: mspoc-todo-app
-        tier: app
+        # tier: app
     spec:
       containers:
       - name: rails

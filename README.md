@@ -14,16 +14,17 @@ rake docker:push_image
 * https://kubernetes.github.io/ingress-nginx/troubleshooting/
 * https://cloud.google.com/blog/products/containers-kubernetes/your-guide-kubernetes-best-practices
 * https://learnk8s.io/production-best-practices
+* https://medium.com/@zwhitchcox/matchlabels-labels-and-selectors-explained-in-detail-for-beginners-d421bdd05362
 
 ```bash
 minikube start
 
+# initialise the namespace
+kubectl create -f infrastructure/namespace/mspoc-todo/namespace.yml
+
 # secrets
 kubectl -n mspoc-todo create secret generic db-user --from-literal=username=postgres
 kubectl -n mspoc-todo create secret generic secret-key-base --from-literal=secret-key-base=85d6555b10f75f61e8191b81d12c38ce37cefbaa24d62d9482ec1b1572f2901983328caca581d4fc731b9591b17d72e37e0e3662b24c0c2d07eadaa19182122e
-
-# initialise the namespace
-kubectl create -f infrastructure/namespace/mspoc-todo/namespace.yml
 
 # volume and postgres TODO: Terraform
 kubectl create -f infrastructure/namespace/mspoc-todo/mspoc-todo-postgres-volume.yml
@@ -52,6 +53,7 @@ kubectl -n kube-system logs nginx-ingress-controller-6fc5bcc8c9-j2xz2
 # kubectl describe ing
 # kubectl get ing
 # minikube ip
+# kubectl -n mspoc-todo delete pods -l app=mspoc-todo-app
 ```
 
 Questions:
